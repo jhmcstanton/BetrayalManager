@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">BetrayalManager</string>
+    <string name="character_sheet">Character Sheets</string>
+    <string name="doom_track">Doom Track</string>
+    <string name="haunt">Your Haunt</string>
+
+    <string-array name="character_names">
+        <item>Heather Granville</item>
+        <item>Jenny LeClerc</item>
+        <item>Ox Bellows</item>
+        <item>Darrin \'Flash\' Williams</item>
+        <item>Vivian Lopez</item>
+        <item>Madame Zostra</item>
+        <item>Missy Dubourde</item>
+        <item>Zoe Ingstrom</item>
+        <item>Peter Akimoto</item>
+        <item>Brandon Jaspers</item>
+        <item>Professor Longfellow</item>
+        <item>Father Rhinehardt</item>
+    </string-array>
+
+
+</resources>
