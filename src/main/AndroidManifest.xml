@@ -14,7 +14,8 @@
         </activity>
 	<activity android:name=".CharacterMenuActivity">
 	</activity>
-	<activity android:name=".CharacterSheet">
+	<activity android:name=".CharacterSheet"
+		  android:configChanges="orientation|screenSize">
 	</activity>
     </application>
 </manifest>
