@@ -28,7 +28,8 @@ class CharacterSheet extends SActivity {
 					      , LayoutParams.MATCH_PARENT
 					      , 1.0f)
   val stats = scala.collection.mutable.Map[String, Int]()
-  onCreate {
+  override def onCreate(savedInstanceState: Bundle) {
+    super.onCreate(savedInstanceState)
     val center = 0x11
     val intent : Intent = getIntent
     val name : String = intent.getStringExtra(CharacterMenuActivity.EXTRA_MESSAGE)
@@ -43,7 +44,13 @@ class CharacterSheet extends SActivity {
         topView += new STextView("Birthday: " + character.birthday + " Age: " + character.age).gravity(center)
 	topView += new STextView(character.hobbies).gravity(center)
 	
-	character.statMap.foreach { pair => this.stats += pair }
+	character.statMap.foreach { case (stat, value) => 
+	  if (savedInstanceState == null)
+	    this.stats +=((stat, value))
+	  else
+	    this.stats +=((stat, savedInstanceState.getInt(stat)))
+	}	
+	  
 	val skillView = new SLinearLayout()
 	skillView.setLayoutParams(params)
 	List(character.speedStats, character.mightStats, character.knowledgeStats, character.sanityStats)
@@ -52,12 +59,10 @@ class CharacterSheet extends SActivity {
 		    val statView = new SVerticalLayout() //.Weight(1.0f)
 		    statView.setLayoutParams(params)
 		    statView += new STextView(statName).gravity(center)
-//		    val indexToHighlight = intent.getIntExtra(statName, character.statMap(statName))
 		    val enumeratedStats = stats.zip(0 to 8)
 		    val statValViews = enumeratedStats map { case (statValue, index) => 
 		      val valView = new STextView(statValue.toString).gravity(center)
 		      if (index == this.stats(statName)){
-//			valView.setBackgroundColor(Color.DKGRAY)
 			valView.setTextColor(Color.RED)
 		      }
 		      statView += valView
@@ -85,8 +90,14 @@ class CharacterSheet extends SActivity {
 	topView += skillView
       }	
     }
-    contentView = scrollEnvironment
+    setContentView(scrollEnvironment) //contentView = scrollEnvironment
   }
+
+  override def onSaveInstanceState(savedInstanceState: Bundle) {
+    this.stats.foreach{ case (statName, statVal) => savedInstanceState.putInt(statName, statVal) }
+    super.onSaveInstanceState(savedInstanceState)
+  }
+  // these should probably be moved elsewhere..
   val characters : Array[Character] = Array(
     new Character("Heather Granville", 18, "August 2nd", "Television, Shopping", 5, 5, 5 , 3, Array(8, 7, 6, 6, 5, 4, 3, 3, 0), Array(8, 7, 6, 5, 4, 3, 3, 3, 0), Array(6, 6, 6, 5, 4, 3, 3, 3, 0), Array(8, 7, 6, 5, 4, 3, 3, 2, 0)),
     new Character("Jenny LeClerc", 21, "March 4th", "Reading, Soccer", 4, 5, 3, 5, Array(8, 6, 5, 4, 4, 4, 3, 2, 0), Array(8, 6, 5, 4, 4, 4, 4, 3, 0), Array(6, 5, 4, 4, 4, 2, 1, 1, 0), Array(8, 6, 5, 4, 4, 3, 3, 2, 0)),
