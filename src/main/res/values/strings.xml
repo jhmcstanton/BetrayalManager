@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">BetrayalManager</string>
     <string name="character_sheet">Character Sheets</string>
-    <string name="doom_track">Doom Track</string>
+    <string name="haunt_track">Haunt Track</string>
     <string name="haunt">Your Haunt</string>
 
     <string-array name="character_names">

@@ -17,5 +17,8 @@
 	<activity android:name=".CharacterSheet"
 		  android:configChanges="orientation|screenSize">
 	</activity>
+	<activity android:name=".HauntTrack"
+		  android:configChanges="orientation|screenSize">
+	</activity>
     </application>
 </manifest>

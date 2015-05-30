@@ -17,8 +17,8 @@
     <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@string/doom_track"
-            android:onClick="doomTrack"/>
+            android:text="@string/haunt_track"
+            android:onClick="hauntTrack"/>
     <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

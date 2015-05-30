@@ -17,7 +17,7 @@ class MainMenu extends SActivity {
     contentView = new SVerticalLayout {
       STextView("Hello World, MainMenu")
       SButton(R.string.character_sheet, charSheets _) 
-      SButton(R.string.doom_track, doomTrack _) 
+      SButton(R.string.haunt_track, hauntTrack _) 
       SButton(R.string.haunt, haunts _) 
     }  //.<<.fill.>>
   }
@@ -27,8 +27,9 @@ class MainMenu extends SActivity {
     startActivity(intent)
   }
   
-  def doomTrack(view: View) {
-    charSheets(view)
+  def hauntTrack(view: View) {
+    val intent : Intent = new Intent(this, classOf[HauntTrack])
+    startActivity(intent)
   }
   
   def haunts(view: View) {
