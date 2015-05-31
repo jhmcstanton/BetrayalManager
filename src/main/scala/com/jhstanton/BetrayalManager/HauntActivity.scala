@@ -3,60 +3,100 @@ package com.jhstanton.BetrayalManager
 import org.scaloid.common._
 import android.os.Bundle
 import android.graphics.Color
-import android.widget.{Spinner, AdapterView, Adapter}
+import android.widget.{Spinner, AdapterView, Adapter, TextView}
 import android.view.View
+import android.content.SharedPreferences
 
 object HauntActivity extends SActivity { //with AdapterView.OnItemSelectedListener {
   def apply() = new HauntActivity()
+  val STORE   = "com.jhstanton.BetrayalManager.HauntActivity.STORE"
+  val LENGTH  = "com.jhstanton.BetrayalManager.HauntActivity.LENGTH"
 }
 
 class HauntActivity extends SActivity with AdapterView.OnItemSelectedListener {
   var roomSelection  = ""
   var omenSelection  = ""
   var hauntReady     = false
-  var previousHaunts = List()
+  val previousHaunts = scala.collection.mutable.MutableList[Int]()
   val hauntBaseStr   = "Your Haunt: "
   val traitorBaseStr = "The Traitor: "
+  val infoSize       = 30
+  val listSize       = 22
+  val center         = 0x11
   
   override def onCreate(savedInstanceState: Bundle) {
     super.onCreate(savedInstanceState)
     
+    val scrollEnvironment = new SScrollView()
+    val prefs = getPreferences(0)
+    if (prefs != null) {
+      getHaunts(prefs)
+    }
     val topLayout = new SVerticalLayout()
     
     val roomDropdown = new Spinner(this)
-    val roomAdapter  = new SArrayAdapter(rooms toArray)
+    val roomAdapter  = new SArrayAdapter(rooms toArray).dropDownStyle((x : TextView) => x.textSize(listSize))
     roomDropdown setAdapter roomAdapter
     roomDropdown setOnItemSelectedListener this
 
     val omenDropdown = new Spinner(this)
-    val omenAdapter  = new SArrayAdapter(omens toArray)
+    val omenAdapter  = new SArrayAdapter(omens toArray).dropDownStyle((x: TextView) => x.textSize(listSize))
     omenDropdown setAdapter omenAdapter
     omenDropdown setOnItemSelectedListener this
 
     topLayout += roomDropdown
     topLayout += omenDropdown
     
-    val hauntView = new STextView(hauntBaseStr)
+    val hauntView = new STextView(hauntBaseStr).textSize(infoSize).gravity(center)
     hauntView.setTextColor(Color.RED)
-    val traitorView = new STextView(traitorBaseStr)
+    val traitorView = new STextView(traitorBaseStr).textSize(infoSize).gravity(center)
     traitorView.setTextColor(Color.RED)
-    val getHaunt = new SButton("Get Your Haunt", retrieveHaunt(hauntView, traitorView) _) 
+    val getHaunt  = new SButton("Get Your Haunt", retrieveHaunt(hauntView, traitorView) _) 
+    val skipHaunt = new SButton("Skip", (view: View) => alert("Indicate Omen Room", "Find the next closest omen room and indicate it above"))
     topLayout += hauntView
     topLayout += traitorView
     topLayout += getHaunt
+    topLayout += skipHaunt
 
-    setContentView(topLayout)
+    val resetBtn = new SButton("Reset", (view: View) => previousHaunts.clear)
+    topLayout += resetBtn
+
+    scrollEnvironment += topLayout
+    setContentView(scrollEnvironment)
   }
   
   def retrieveHaunt(hauntView: STextView, traitorView: STextView)(view: View) {
     if (hauntReady){
-      val hauntNumber = hauntMap(roomSelection)(omenSelection)
+      val hauntNumber = hauntMap(roomSelection)(omenSelection)      
+      if (previousHaunts.exists(_ == hauntNumber)){
+	alert("Previous Haunt Found" , "You have already dealt with this haunt, hit skip to find a new one")
+      }
+      previousHaunts += hauntNumber
       hauntView.setText(hauntBaseStr + hauntNumber.toString)
       traitorView.setText(traitorBaseStr + traitors(hauntNumber - 1))
     }
     else {
       alert("Haunt Not Ready", "Indicate the room and omen that triggered the haunt.")
     } 
+  }
+  
+  override def onBackPressed() {
+    storeHaunts()
+    super.onBackPressed
+  }
+
+  def storeHaunts() {
+    val editor : SharedPreferences.Editor = getPreferences(0).edit()
+    editor.putInt(HauntActivity.LENGTH, previousHaunts.length)
+    (0 to (previousHaunts.length - 1)).foreach{ x => 
+      editor.putInt(HauntActivity.STORE + x.toString, previousHaunts(x))
+    }
+    editor.commit()
+  }
+
+  def getHaunts(prefs: SharedPreferences)  {
+    val count = prefs.getInt(HauntActivity.LENGTH, 0)
+    (0 to count).foreach{ x => previousHaunts += prefs.getInt(HauntActivity.STORE + x.toString, 0) }
   }
 
   def onItemSelected(parent: AdapterView[_], view: View, pos: Int, id: Long) {
