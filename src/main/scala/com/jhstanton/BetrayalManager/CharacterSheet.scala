@@ -9,6 +9,7 @@ import android.view.ViewGroup.{LayoutParams}
 import android.graphics.Color
 import android.widget.LinearLayout//{Button, TextView, LinearLayout}
 import android.content.SharedPreferences
+import scala.util.Properties
 
 import org.scaloid.common._
 
@@ -44,8 +45,8 @@ class CharacterSheet extends SActivity {
       case None => alert("Key Error", "Unable to find character: " + name)
       case Some(character) => {
 	topView += new STextView(character.name).gravity(center)
-        topView += new STextView("Birthday: " + character.birthday + " Age: " + character.age).gravity(center)
-	topView += new STextView(character.hobbies).gravity(center)
+        topView += new STextView("Birthday: " + character.birthday + Properties.lineSeparator + " Age: " + character.age).gravity(center)
+	topView += new STextView("Hobbies: " + character.hobbies).gravity(center)
 	
 	// create new stats from defaults, or take a saved instance (lost focus), or take from preferences (app destroyed)
 	val prefs = getSharedPreferences(packageInfo + name, 0)
