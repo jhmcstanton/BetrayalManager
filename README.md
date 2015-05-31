@@ -21,7 +21,7 @@ board game.
 
 This has *not* been thoroughly tested, *at all.* Feel free to use this and let me know if there are any additional features you would like, and I'd be more than happy to see about adding them. 
 
-![Main Menu]("https://lh4.googleusercontent.com/pgOoITtT6AHIYJ8dS7LcYKb-umb0MYC8NvL6LiwygOdGvpEg49AG34W0-7YMbpGpGa3WOQ=w1275-h551")
-![Character Sheet]("https://lh3.googleusercontent.com/m8IFJ6i3K8XaPvHS_ZbrZ7Mj7GgUJjbDx2UBt4ICxy1SfXzapJ1ZtmR0F6RrpGJ12LU_0A=w1275-h551")
-![Haunt Track]("https://lh4.googleusercontent.com/sJDjFlZcyH-YUH3QEaYVVq6RsqPPEMPjgCeXuQD6Kzl9M2pfzC5iRTIz7mn8hv11ETuGrQ=w1275-h551")
-![Haunt Finder]("https://lh6.googleusercontent.com/0cHVkIdFlPNAmSSVk26hiRaPg-WOD9wox-Io8qjTRZJnI3wk97bplIMMKdidaT2laVqOeA=w1275-h551")
+![Main Menu](https://github.com/jhstanton/BetrayalManager/blob/master/images/Screenshots/MainMenu.png)
+![Character Sheet](https://github.com/jhstanton/BetrayalManager/blob/master/images/Screenshots/CharacterSheet.png)
+![Haunt Track](https://github.com/jhstanton/BetrayalManager/blob/master/images/Screenshots/HauntTrack.png)
+![Haunt Finder](https://github.com/jhstanton/BetrayalManager/blob/master/images/Screenshots/HauntFinder.png)
