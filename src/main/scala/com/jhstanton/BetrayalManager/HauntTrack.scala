@@ -2,6 +2,7 @@ package com.jhstanton.BetrayalManager
 
 import org.scaloid.common._
 import android.os.Bundle
+import android.content.Intent
 import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup.{LayoutParams}
@@ -45,7 +46,7 @@ class HauntTrack extends SActivity {
     mainLayout += hauntLvlView
     val modButtons = new SLinearLayout{
       SButton("+", update( 1, hauntLvlView) _).<<.Weight(1.0f).>>
-      SButton("-", update(-1, hauntLvlView) _).<<.Weight(1.0f).>> // need to set weight
+      SButton("-", update(-1, hauntLvlView) _).<<.Weight(1.0f).>> 
     }
     mainLayout += modButtons
     val reset = new SButton("Reset", update(1 - hauntLvl, hauntLvlView) _)
@@ -87,6 +88,8 @@ class HauntTrack extends SActivity {
     if (rollResult <= hauntLvl) {
       // Start the haunt activity
       alert("Your Haunt Begins", "MUAHAHAHAHA")
+      val intent : Intent = new Intent(this, classOf[HauntActivity])
+      startActivity(intent)
     }
     else {
       update(1, hauntLvlView)(null)

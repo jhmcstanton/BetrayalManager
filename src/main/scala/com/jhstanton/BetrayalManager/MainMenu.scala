@@ -33,6 +33,7 @@ class MainMenu extends SActivity {
   }
   
   def haunts(view: View) {
-    charSheets(view)
+    val intent : Intent = new Intent(this, classOf[HauntActivity])
+    startActivity(intent)
   }
 }
