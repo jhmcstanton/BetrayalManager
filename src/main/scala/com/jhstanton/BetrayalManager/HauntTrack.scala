@@ -16,11 +16,12 @@ object HauntTrack extends SActivity {
 }
 
 class HauntTrack extends SActivity {
-  val numDice    : Int = 8 // 8 six sided , but numbers are 0, 1, and 2. Probability of each needs to be accounted for
+  val numDice    : Int = 8 // 8d6, 
   var hauntLvl   : Int = 1
   val center           =  0x11
   val hauntLvlBase     = "Haunt Level: "
   val hauntLvlSize     = 140
+  val rollBaseStr      = "Last Roll: "
 
   val params = new LinearLayout.LayoutParams( LayoutParams.MATCH_PARENT
 					      , LayoutParams.MATCH_PARENT
@@ -49,6 +50,13 @@ class HauntTrack extends SActivity {
     mainLayout += modButtons
     val reset = new SButton("Reset", update(1 - hauntLvl, hauntLvlView) _)
     mainLayout += reset
+    
+    val rollTextView  = new STextView(rollBaseStr + "0").textSize((hauntLvlSize / 4) sp).gravity(center)
+    rollTextView.setTextColor(Color.RED)
+    val rollBtn       = new SButton("Roll", diceHandler(rollTextView, hauntLvlView) _)
+    mainLayout += rollTextView
+    mainLayout += rollBtn
+
     scrollEnvironment += mainLayout
     setContentView(scrollEnvironment)
   }
@@ -72,9 +80,30 @@ class HauntTrack extends SActivity {
     editor.commit
     super.onBackPressed
   }
-  /*def rollDice(resultView: View) {
-    val result = (1 to 8).map(
-  }*/
 
+  def diceHandler(rollDisplay: STextView, hauntLvlView: STextView)(view: View) {
+    val rollResult = rollDice
+    rollDisplay.setText(rollBaseStr + rollResult.toString)
+    if (rollResult <= hauntLvl) {
+      // Start the haunt activity
+      alert("Your Haunt Begins", "MUAHAHAHAHA")
+    }
+    else {
+      update(1, hauntLvlView)(null)
+    }
+     
+  }
+  def rollDice(): Int = { 
+    (1 to numDice).map{ _ => 
+      val roll = Random.nextDouble
+      if(roll < .33)
+	0
+      else if(roll < .66)
+        1
+      else
+	2
+    }.sum
+  }
+  
 }
 
